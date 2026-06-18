@@ -12,6 +12,13 @@ const SECRET_KEY = process.env.SECRET_KEY || 'pulse_secret_key_2025';
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
+app.get('/api/health', (req, res) => {
+  db.query('SELECT 1', (err) => {
+    if (err) return res.json({ status: 'DB error', error: err.message });
+    res.json({ status: 'OK' });
+  });
+});
+
 // ── Подключение к БД через переменные окружения ──────────────────────────────
 const db = mysql.createConnection({
   host:     process.env.DB_HOST,
